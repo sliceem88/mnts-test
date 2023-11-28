@@ -22,8 +22,8 @@ You could change the name, user and password of the database in the `env` file a
 
 ## Endpoints
 
-|  url | params  | params  |
-| ------------ | ------------ |
+|  Endpoint | Params  | Method  |
+| ------------ | ------------ | ------------ |
 | /account-list  |  	client_id  | POST |
 | /make-transaction  |  	id_from, id_to, amount, currency  | POST |
 | /transactions-history  |  	account_id  | POST |
