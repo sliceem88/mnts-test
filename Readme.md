@@ -21,6 +21,7 @@ DATABASE_URL=mysql://app_user:helloworld@db:3306/app_db?serverVersion=8.0.33
 You could change the name, user and password of the database in the `env` file at the root of the project.
 
 ## Endpoints
+
 |  Endpoint | Params  | Method  |
 | ------------ | ------------ |
 | /account-list  |  	client_id  | POST |
