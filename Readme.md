@@ -32,7 +32,7 @@ You could change the name, user and password of the database in the `env` file a
 
 ## Example
 
-|  url | params  |
+|  Endpoint | Params  | Method  |
 | ------------ | ------------ |
 |  http://0.0.0.0:888/transactions-history |  account_id = MDI75ORX5PX <br> offset = 1 <br> limit = 2 |
 |  http://0.0.0.0:888/account-list  |  client_id=1 |
