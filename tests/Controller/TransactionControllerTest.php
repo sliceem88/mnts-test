@@ -66,6 +66,9 @@ class TransactionControllerTest extends WebTestCase
             'currency' => $currency
         ]);
 
-        $this->assertStringContainsString('Missing required parameter:', $client->getResponse()->getContent());
+        $result = json_decode($client->getResponse()->getContent(), true);
+
+        $this->assertArrayHasKey('message', $result);
+        $this->assertStringStartsWith('Error while processing.', $result['message']);
     }
 }

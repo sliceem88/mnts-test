@@ -23,6 +23,10 @@ class TransactionHistoryControllerTest extends WebTestCase
         $client = static::createClient();
 
         $client->request('POST', '/transactions-history');
-        $this->assertStringContainsString('Account id is missing or empty', $client->getResponse()->getContent());
+
+        $result = json_decode($client->getResponse()->getContent(), true);
+
+        $this->assertArrayHasKey('message', $result);
+        $this->assertStringStartsWith('Error while processing. Account id is missing or empty', $result['message']);
     }
 }

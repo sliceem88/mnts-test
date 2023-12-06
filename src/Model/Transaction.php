@@ -24,8 +24,7 @@ final class Transaction implements TransactionInterface
         private CurrencyExchangeInterface             $currencyExchange,
         private TransactionHistoryRepositoryInterface $transactionHistoryRepository,
         private TransactionHistoryFactory             $transactionHistoryFactory,
-    )
-    {
+    ){
     }
 
     /**
