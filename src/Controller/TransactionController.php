@@ -6,7 +6,9 @@ use App\Interface\TransactionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Throwable;
 
 final class TransactionController extends AbstractController
 {
@@ -19,20 +21,32 @@ final class TransactionController extends AbstractController
     public function index(Request $request): JsonResponse
     {
         $requiredParams = $this->getRequiredParams($request);
-        $transactionId = $this->transaction->make(...$requiredParams);
 
-        if($transactionId === false) {
-            throw new \Exception('Transaction failed');
+        try {
+            $transactionId = $this->transaction->make(...$requiredParams);
+
+            if($transactionId === false) {
+                return $this->json(
+                    data: ['message' => 'Transaction failed, please check you account data'],
+                    status: Response::HTTP_BAD_REQUEST
+                );
+            }
+
+            return $this->json([
+                'transactionId' => $transactionId,
+                'message' => 'Transaction was successful, please check you account data'
+            ]);
+
+        } catch (Throwable $exception) {
+            return $this->json(
+                data: ['message' => "Error while processing. {$exception->getMessage()}"],
+                status: Response::HTTP_BAD_REQUEST
+            );
         }
-
-        return $this->json([
-           'transactionId' => $transactionId,
-           'message' => 'Transaction was successful, please check you account data'
-        ]);
     }
 
     //TODO: move validation to own validator???
-    private function getRequiredParams(Request $request): array
+    private function getRequiredParams(Request $request): array | JsonResponse
     {
         $data = [
           'accountIdFrom' => $request->get('id_from'),
@@ -43,7 +57,10 @@ final class TransactionController extends AbstractController
 
         foreach ($data as $key => $value) {
             if(empty($value) || !is_string($value)) {
-                throw new \Exception("Missing required parameter: $key, please check");
+                return $this->json(
+                    data: ['message' => "Missing required parameter: $key, please check"],
+                    status: Response::HTTP_BAD_REQUEST
+                );
             }
         }
 

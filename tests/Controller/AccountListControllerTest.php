@@ -27,6 +27,9 @@ class AccountListControllerTest extends WebTestCase
 
         $client->request('POST', '/account-list');
 
-        $this->assertStringContainsString('User id is missing or empty', $client->getResponse()->getContent());
+        $result = json_decode($client->getResponse()->getContent(), true);
+
+        $this->assertArrayHasKey('message', $result);
+        $this->assertStringStartsWith('User id is missing or empty', $result['message']);
     }
 }

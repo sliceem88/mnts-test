@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 final class AccountListController extends AbstractController
 {
@@ -21,7 +22,10 @@ final class AccountListController extends AbstractController
         $userId = $request->get('client_id');
 
         if(empty($userId)) {
-            throw new \Exception('User id is missing or empty');
+            return $this->json(
+                data: ['message' => 'User id is missing or empty'],
+                status: Response::HTTP_BAD_REQUEST
+            );
         }
 
         $account = $this->accountsRepository->getByUserId($userId);
